@@ -1,0 +1,4 @@
+name = Islandora Regenerate DS
+description = "Regenerating a datastream after event"
+core = 7.x
+dependencies[] = islandora
