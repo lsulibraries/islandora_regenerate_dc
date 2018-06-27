@@ -19,35 +19,20 @@ function islandora_regenerate_dc_menu() {
   return $items;
 }
 
-// invoke hook_islandora_datastream_ingested
+// implement hook_islandora_datastream_ingested
+function islandora_regenerate_dc_islandora_datastream_modified($object, $datastream, $params) {
+  if($datastream->id == 'MODS') {
+    module_load_include('inc', 'islandora_batch_derivative_trigger', 'includes/batch');
+    module_load_include('module', 'xml_form_builder', 'xml_form_builder');
+    islandora_batch_derivative_trigger_regenerate_dc_metadata($object, 'mods_to_dc.xsl:MODS');
 
-
-function islandora_regenerate_dc_islandora_datastream_modified($pid) {
-  //i need the pid somehow...
-  module_load_include('inc', 'islandora_batch_derivative_trigger', 'includes/batch');
-  module_load_include('inc', 'islandora_regenerate_dc', 'utils');
-  module_load_include('module', 'xml_form_builder', 'xml_form_builder');
-
-  dpm('did it run? modified');
-
-  $obj = islandora_object_load($pid);
-  islandora_batch_derivative_trigger_regenerate_dc_metadata($obj, 'mods_to_dc.xsl:MODS');
-
-//borrowed from SFULibrary/islandora_datastream_crud
-//special thanks to Mark Jordan
-// Update object label from DC if specified.
-  $dc = simplexml_load_string($obj['DC']->content);
-  $new_title = $dc->title;
-  if ($new_title != $obj->label) {
-    $old_title = $obj->label;
-    $obj->label = $new_title;
+    $dc_xml = simplexml_load_string($object['DC']->content);
+    $namespaces = $dc_xml->getNamespaces(TRUE);
+    $dc = $dc_xml->children($namespaces['dc']);
+    $new_title = $dc->title;
+    if ($new_title != $object->label) {
+      $old_title = $object->label;
+      $object->label = $new_title;
+    }
   }
 }
-
-islandora_regenerate_ds_islandora_datastream_modified('lsu-sc-test:5');
-
-
-function islandora_regenerate_ds_islandora_datastream_purged() {
-  dpm('did it run? purged');
-}
-
