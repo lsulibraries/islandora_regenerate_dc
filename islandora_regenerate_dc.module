@@ -8,7 +8,7 @@ require_once drupal_get_path('module', 'islandora_basic_collection') . '/include
  * Define hooks and menu
  */
 
-function islandora_regenerate_ds_menu() {
+function islandora_regenerate_dc_menu() {
   $items = array();
   $items['admin/islandora/tools/islandora_regenerate_dc'] = array(
     'title' => 'DC Regeneration',
@@ -22,7 +22,7 @@ function islandora_regenerate_ds_menu() {
 // invoke hook_islandora_datastream_ingested
 
 
-function islandora_regenerate_ds_islandora_datastream_modified($pid) {
+function islandora_regenerate_dc_islandora_datastream_modified($pid) {
   //i need the pid somehow...
   module_load_include('inc', 'islandora_batch_derivative_trigger', 'includes/batch');
   module_load_include('inc', 'islandora_regenerate_dc', 'utils');
