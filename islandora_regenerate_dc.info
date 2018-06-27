@@ -1,0 +1,4 @@
+name = Islandora Regenerate DC
+description = "Regenerating Dublin Core after MODS updated"
+core = 7.x
+dependencies[] = islandora
