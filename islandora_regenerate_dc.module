@@ -1,8 +1,4 @@
 <?php
-
-module_load_include('php', 'islandora', '../islandora.api');
-require_once drupal_get_path('module', 'islandora_basic_collection') . '/includes/batch.inc';
-
 /**
  * @file
  * Define hooks and menu
